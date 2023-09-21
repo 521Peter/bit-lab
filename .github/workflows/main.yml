@@ -1,11 +1,10 @@
-name: build
+name: bit-lab-build
 on: 
   push: 
     branches: 
       - main # 这里表示push到main分支就会触发流程
 jobs:
   build-and-deploy:
-    # runs-on: ubuntu-18.04.6 
     runs-on: ubuntu-22.04 
     steps:
       # 这是github官方的一个action，用于clone该仓库的源码到工作流中，
@@ -13,6 +12,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
+
+      # 指定 node 版本
+      - uses: actions/setup-node@v2 
+        with:
+          node-version: '16'
 
       - name: Build
         run: |
