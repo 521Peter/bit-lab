@@ -5,7 +5,8 @@ on:
       - main # 这里表示push到main分支就会触发流程
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-18.04.6
+    # runs-on: ubuntu-18.04.6
+    runs-on: ubuntu-18.04
     steps:
       # 这是github官方的一个action，用于clone该仓库的源码到工作流中，
       - name: Checkout 🛎️
@@ -30,6 +31,6 @@ jobs:
          user: ${{ secrets.DR_USER }}
          pass: ${{ secrets.DR_PASS }}
          connect_timeout: 10s
-         local: './my-project/dist/*' # 这里是下一步要创建的vue项目构建完成后的静态资源路径
+         local: './dist/*' # 这里是下一步要创建的vue项目构建完成后的静态资源路径
          remote: /var/www/html # 这里是 step1 中，在服务器上创建用于存放静态资源的文件夹
 
