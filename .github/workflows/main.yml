@@ -25,27 +25,27 @@ jobs:
           npm run build  # 执行打包
   
       # 连接到ssh，并且做一个拷贝操作的action
-      # - name: Deploy 🚀
-      #   uses: cross-the-world/scp-pipeline@master
-      #   env:
-      #     WELCOME: "ssh scp ssh pipelines"
-      #     LASTSSH: "Doing something after copying"
-      #   with:
-      #    host: ${{ secrets.DR_HOST }}
-      #    user: ${{ secrets.DR_USER }}
-      #    pass: ${{ secrets.DR_PASS }}
-      #    connect_timeout: 10s
-      #    local: './dist/*' # 这里是下一步要创建的vue项目构建完成后的静态资源路径
-      #    remote: /var/www/html/ # 这里是 step1 中，在服务器上创建用于存放静态资源的文件夹
+      - name: Deploy 🚀
+        uses: cross-the-world/scp-pipeline@master
+        env:
+          WELCOME: "ssh scp ssh pipelines"
+          LASTSSH: "Doing something after copying"
+        with:
+         host: ${{ secrets.DR_HOST }}
+         user: ${{ secrets.DR_USER }}
+         pass: ${{ secrets.DR_PASS }}
+         connect_timeout: 10s
+         local: './dist/*' # 这里是下一步要创建的vue项目构建完成后的静态资源路径
+         remote: /var/www/html/ # 这里是 step1 中，在服务器上创建用于存放静态资源的文件夹
 
-      - name: Deploy to Server  # 第四步，rsync推送文件
-      uses: AEnterprise/rsync-deploy@v1.0  # 使用别人包装好的步骤镜像
-      env:
-        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}   # 引用配置，SSH私钥
-        ARGS: -avz --delete --exclude='*.pyc'   # rsync参数，排除.pyc文件
-        SERVER_PORT: '22'  # SSH端口
-        FOLDER: ./build/*  # 要推送的文件夹，路径相对于代码仓库的根目录
-        SERVER_IP: ${{ secrets.DR_HOST }}  # 引用配置，服务器的host名（IP或者域名domain.com）
-        USERNAME: ${{ secrets.DR_USER }}  # 引用配置，服务器登录名
-        SERVER_DESTINATION: /var/www/html/   # 部署到目标文件夹   
+      # - name: Deploy to Server  # 第四步，rsync推送文件
+      # uses: AEnterprise/rsync-deploy@v1.0  # 使用别人包装好的步骤镜像
+      # env:
+      #   DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}   # 引用配置，SSH私钥
+      #   ARGS: -avz --delete --exclude='*.pyc'   # rsync参数，排除.pyc文件
+      #   SERVER_PORT: '22'  # SSH端口
+      #   FOLDER: ./build/*  # 要推送的文件夹，路径相对于代码仓库的根目录
+      #   SERVER_IP: ${{ secrets.DR_HOST }}  # 引用配置，服务器的host名（IP或者域名domain.com）
+      #   USERNAME: ${{ secrets.DR_USER }}  # 引用配置，服务器登录名
+      #   SERVER_DESTINATION: /var/www/html/   # 部署到目标文件夹   
 
