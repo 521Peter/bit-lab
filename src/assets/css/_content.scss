@@ -1,0 +1,110 @@
+/*
+    * 本项目 css 的主入口
+    * 包含基本标签样式、变量、混入样式
+*/
+
+@import "variables/variables.scss";
+@import "normalize-mixin/normalize-mixin.scss";
+@import "assets/css/_handle.scss";
+
+// 之后要修改一些标签的默认样式可以在这里书写
+body {
+  width: 100%;
+  height: 100vh; 
+  // 移动端的用户点击链接或按钮等元素会出现框框，下面这句代码可以使其透明，不被用户看见
+  *{-webkit-tap-highlight-color: transparent;}
+  //设置全页面背景颜色
+  @include background_color("bgc");
+  //   以上代码相当于
+  // [data-theme="light"] & {
+  //   background: #cccccc;  
+  // }...
+  //设置全页面的文字颜色
+  @include font_color("mainTextClr");
+  // 设置背景的过渡时间
+  transition: background 1s;
+  #app {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// 向右移动的动画
+@keyframes goRight {
+  0%{
+    opacity: .4;
+    transform: translateX(-40px);
+  }
+  100%{
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+// 向左移动的动画
+@keyframes goLeft {
+  0%{
+    opacity: .4;
+    transform: translateX(40px);
+  }
+  100%{
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+// 向上移动的动画
+@keyframes goTop{
+  0%{
+    opacity: 0;
+    transform: translate3d(0, 50px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// 响应式布局的框架约束
+// 如何使用？
+// 1.需要设置框架的块级元素中同时添加 类contain 和 IDcontain
+// 2.在写样式时只能使用contain类（禁止使用#contain,目的是防止媒体查询的样式因为优先级不够而无法生效）
+@mixin responsive_constraint() {
+
+  // 通用的盒子，可以使块级元素左右居中
+  .contain {
+    width: 1140px;
+    // 设置盒子的大小只由width和height决定
+    box-sizing: border-box;
+    margin: 0 auto;
+  }
+
+  // 屏幕宽度小于 1200 像素
+  @media screen and (max-width: 1200px) {
+
+    // 使用ID选择器，确保能使样式生效
+    #contain {
+      width: 960px;
+    }
+  }
+
+  // 屏幕宽度小于 992 像素
+  @media screen and (max-width: 992px) {
+    #contain {
+      width: 720px;
+    }
+  }
+
+  // 屏幕宽度小于 768 像素
+  @media screen and (max-width: 768px) {
+    #contain {
+      width: 510px;
+    }
+  }
+
+  // 屏幕宽度小于 576 像素
+  @media screen and (max-width: 576px) {
+    #contain {
+      width: 100%;
+    }
+  }
+}
+

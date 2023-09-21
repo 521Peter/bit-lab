@@ -1,0 +1,52 @@
+// 引入主题样式
+@import "_themes.scss";
+
+//遍历主题$themes
+//$theme-name代表"light"和"dark"
+//$theme-map代表(backgroundColor等样式名)
+@mixin themeify {
+  @each $theme-name, $theme-map in $themes {
+    //!global 把局部变量提升为全局变量
+    $theme-map: $theme-map !global;
+    //判断html的data-theme的属性值  #{}是sass的插值表达式
+    //& sass嵌套里的父容器标识   @content是混合器插槽，像vue的slot   []是属性选择器
+    [data-theme = "#{$theme-name}"] & {
+      @content;
+    } 
+  }
+}
+
+//声明一个根据Key获取颜色的函数
+@function themed($key) {
+  @return map-get($theme-map, $key);
+}
+
+//获取背景颜色
+@mixin background_color($value) {
+  @include themeify {
+    // 这句代码最终会替换@content
+    background: themed($value) !important;
+  }
+}
+
+//获取字体颜色
+@mixin font_color($value) {
+  @include themeify {
+    color: themed($value) !important;
+  }
+}
+
+// 获取边框颜色
+@mixin border_color($value) {
+  @include themeify {
+    border-color: themed($value) !important;
+  }
+}
+
+//获取背景透明度
+@mixin background_opacity($value) {
+  @include themeify {
+    opacity: themed($value) !important;
+  }
+}
+

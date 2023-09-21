@@ -1,0 +1,61 @@
+// 主题样式
+$themes: ( 
+  // 白天模式
+  light: ( 
+    // 背景色
+    bgc: #f5f5f5, // 背景色,不能随意更改
+    bgc2: #f3f7ff, // 另一套背景色 
+    switchBtnBgc:#F9F9F9, // 主要用在滑块按钮
+    menuBgc:#FFFFFF, // 导航菜单的背景色 
+    searchBoxBgc:#F9F9F9, // 隐藏搜索框盒子的背景颜色
+    searchBgc:#ffffff, // 搜索框的背景颜色
+    topBackBtnBgc:#FFFFFF, // 回到顶部按钮的背景颜色
+    topBackBtnHoverBgc:#EFEFEF,// 鼠标移动到回到顶部按钮时的背景颜色
+    btnBgc: #FFD404, // 按钮背景色
+    inpBgc: #fff, 
+
+    // 文本色
+    mainTextClr: black, // 主文本色,主要用于正文
+    deputyTextClr: #fad620, // 副文本色，主要用于about页面中的标题
+    menuTextClr:#213547, // 导航菜单文字颜色
+    teacherTextClr:#213547, // 介绍老师所用的文字颜色
+    searchIptTextClr:#767676, // 搜索框中的字体颜色
+    menuBorderClr:#E7E7E7, // 导航菜单的下边框颜色
+    accountBorderClr: #e3e9ed, // 个人主页边框颜色
+
+    // 其他
+    bgOpacity: 1, // 背景透明度
+  ),
+  // 夜间模式
+  dark: ( 
+    // 背景色
+    bgc: #181c27, //背景色，不能随意更改
+    bgc2: rgb(26, 50, 66), //另一套背景色
+    switchBtnBgc:#242424, // 主要用在滑块按钮
+    menuBgc:#1A1A1A, //导航菜单的背景色
+    searchBoxBgc:#242424, // 隐藏搜索框的背景颜色
+    searchBgc:#2f2f2f, // 搜索框的背景颜色
+    topBackBtnBgc:#000, // 回到顶部按钮的背景颜色
+    topBackBtnHoverBgc:#373535,// 鼠标移动到回到顶部按钮时的背景颜色
+    btnBgc: #f5d846, // 按钮背景色
+    inpBgc: #e3e9ed,
+
+    // 文本色
+    mainTextClr: #999999, // 主文本色,主要用于正文，不能随意更改
+    deputyTextClr:#f9d936, // 副文本色，主要用于about页面中的标题
+    meauTextColor:#E1E1E1, // 导航菜单文字颜色
+    teacherTextClr:rgb(236, 222, 222), // 介绍老师所用的文字颜色
+    searchIptTextClr:#A0A0A0, // 搜索框中的字体颜色
+    menuBorderClr:#363636, // 导航菜单的下边框颜色
+    accountBorderClr: #999999, // 个人主页边框颜色
+
+    // 其他
+    bgOpacity: 0.8, // 背景透明度
+  ));
+
+
+// 如何使用当前主题的颜色？ 
+// 1.引入：@import "assets/css/_content.scss";
+// 2.在选择器内使用：
+//     (1)设置背景色：@include background_color("bgc")
+//     (2)设置文本色：@include font_color("mainTextColor或者deputyTextColor ...也可以自定义")
