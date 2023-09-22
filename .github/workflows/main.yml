@@ -2,52 +2,37 @@ name: bit-lab-build
 on:
   push:
     branches:
-      # 这里表示push到main分支就会触发流程
-      - main
+      - main # 这里表示push到main分支就会触发流程
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # 切换到master分支
-      - name: Checkout
+      - name: Checkout 🛎️
+        # 这是github官方的一个action，用于clone该仓库的源码到工作流中
         uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
-      # 使用 node:10
-      - name: Use Node.js 14
-        uses: actions/setup-node@v2
+      # 指定 node 版本
+      - uses: actions/setup-node@v2
         with:
           node-version: "14"
 
       - name: Install-and-Build
         run: |
-          npm install
-          npm run build
+          npm install  # 安装依赖
+          npm run build  # 执行打包
 
-      # 部署
-      # - name: Deploy
-      #   uses: easingthemes/ssh-deploy@v2.0.7
-      #   # 注入环境变量供ssh-deploy使用
-      #   env:
-      #     # secrets中配置的私钥，用于免密连接服务器
-      #     SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
-      #     # 服务器地址
-      #     REMOTE_HOST: ${{ secrets.DR_HOST }}
-      #     # 用户名
-      #     REMOTE_USER: ${{ secrets.DR_USER }}
-      #     # 部署路径
-      #     TARGET: "/var/www/html/"
-      #     # 打包文件来源
-      #     SOURCE: "dist/"
-      #     # 删除服务器上TARGET目录里所有文件
-      #     ARGS: "-avz --delete"
-
-      - name: Deploy to Server # 第四步，rsync推送文件
-        uses: AEnterprise/rsync-deploy@v1.0 # 使用别人包装好的步骤镜像
+      # 连接到ssh，并且做一个拷贝操作的action
+      - name: Deploy 🚀
+        uses: cross-the-world/scp-pipeline@master
         env:
-          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }} # 引用配置，SSH私钥
-          ARGS: -avz --delete --exclude='*.pyc' # rsync参数，排除.pyc文件
-          SERVER_PORT: "22" # SSH端口
-          FOLDER: ./dist/* # 要推送的文件夹，路径相对于代码仓库的根目录
-          SERVER_IP: ${{ secrets.DR_HOST }} # 引用配置，服务器的host名（IP或者域名domain.com）
-          USERNAME: ${{ secrets.DR_USER }} # 引用配置，服务器登录名
-          SERVER_DESTINATION: /var/www/html/ # 部署到目标文件夹
+          WELCOME: "ssh scp ssh pipelines"
+          LASTSSH: "Doing something after copying"
+        with:
+          host: ${{ secrets.DR_HOST }}
+          user: ${{ secrets.DR_USER }}
+          pass: ${{ secrets.DR_PASS }}
+          connect_timeout: 10s
+          local: ./dist/* # 这里是下一步要创建的vue项目构建完成后的静态资源路径
+          remote: /var/www/html/ # 这里是 step1 中，在服务器上创建用于存放静态资源的文件夹

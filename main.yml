@@ -1,0 +1,53 @@
+name: bit-lab-build
+on:
+  push:
+    branches:
+      # 这里表示push到main分支就会触发流程
+      - main
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 切换到master分支
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # 使用 node:10
+      - name: Use Node.js 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Install-and-Build
+        run: |
+          npm install
+          npm run build
+
+      # 部署
+      # - name: Deploy
+      #   uses: easingthemes/ssh-deploy@v2.0.7
+      #   # 注入环境变量供ssh-deploy使用
+      #   env:
+      #     # secrets中配置的私钥，用于免密连接服务器
+      #     SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
+      #     # 服务器地址
+      #     REMOTE_HOST: ${{ secrets.DR_HOST }}
+      #     # 用户名
+      #     REMOTE_USER: ${{ secrets.DR_USER }}
+      #     # 部署路径
+      #     TARGET: "/var/www/html/"
+      #     # 打包文件来源
+      #     SOURCE: "dist/"
+      #     # 删除服务器上TARGET目录里所有文件
+      #     ARGS: "-avz --delete"
+
+      - name: Deploy to Server # 第四步，rsync推送文件
+        uses: AEnterprise/rsync-deploy@v1.0 # 使用别人包装好的步骤镜像
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }} # 引用配置，SSH私钥
+          ARGS: -avz --delete --exclude='*.pyc' # rsync参数，排除.pyc文件
+          SERVER_PORT: "22" # SSH端口
+          FOLDER: ./dist/* # 要推送的文件夹，路径相对于代码仓库的根目录
+          SERVER_IP: ${{ secrets.DR_HOST }} # 引用配置，服务器的host名（IP或者域名domain.com）
+          USERNAME: ${{ secrets.DR_USER }} # 引用配置，服务器登录名
+          SERVER_DESTINATION: /var/www/html/ # 部署到目标文件夹
