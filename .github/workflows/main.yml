@@ -25,7 +25,7 @@ jobs:
 
       # 部署
       - name: Deploy
-        uses: easingthemes/ssh-deploy@v2.0.7
+        uses: easingthemes/ssh-deploy@v2.0.7 
         # 注入环境变量供ssh-deploy使用
         env:
           # secrets中配置的私钥，用于免密连接服务器
