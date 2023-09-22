@@ -6,12 +6,10 @@ on:
       - main
 jobs:
   build-and-deploy:
-    # name: build
     runs-on: ubuntu-latest
     steps:
       # 切换到master分支
       - name: Checkout
-        # uses: actions/checkout@master
         uses: actions/checkout@v2
 
       # 使用 node:10
@@ -39,6 +37,6 @@ jobs:
           # 部署路径
           TARGET: "/var/www/html/"
           # 打包文件来源
-          SOURCE: "dist/"
+          SOURCE: "./dist/"
           # 删除服务器上TARGET目录里所有文件
           ARGS: "-avz --delete"
