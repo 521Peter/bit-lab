@@ -12,7 +12,7 @@ jobs:
       # 切换到master分支
       - name: Checkout
         # uses: actions/checkout@master
-        uses: actions/checkout@main
+        uses: actions/checkout@v2
 
       # 使用 node:10
       - name: Use Node.js 16
