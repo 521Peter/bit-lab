@@ -16,11 +16,10 @@ jobs:
       # 指定 node 版本
       - uses: actions/setup-node@v2
         with:
-          node-version: "16"
+          node-version: "14"
 
       - name: Install-and-Build
         run: |
-          cd ./ # 进入项目目录
           npm install  # 安装依赖
           npm run build  # 执行打包
 
